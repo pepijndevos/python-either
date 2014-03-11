@@ -17,31 +17,31 @@
 
 
 class Either(object):
-    pass
+    __slots__ = ['value']
+    def __bool__(self):
+        # by convention Right contains
+        # the right = correct = truthy value
+        return isinstance(self, Right)
 
 class Left(Either):
-    def __init__(self, v): self.v = v
-    def is_left(self): return True
-    def is_right(self): return False
-    def value(self): return self.v 
+    __slots__ = ['value']
+    def __init__(self, v): self.value = v
 
 class Right(Either):
-    def __init__(self, v): self.v = v
-    def is_left(self): return False
-    def is_right(self): return True
-    def value(self): return self.v 
+    __slots__ = ['value']
+    def __init__(self, v): self.value = v
 
 
 class Maybe(object):
-    pass
+    __slots__ = ['value']
+    def __bool__(self):
+        return isinstance(self, Just)
 
 class Nothing(Maybe):
-    def is_empty(self): return True
-    def is_something(self): return False
-    def value(self): raise Exception('Called value() on Nothing value')
+    __slots__ = []
+    @property
+    def value(self): raise AttributeError('Nothing has no value')
 
-class Something(Maybe):
-    def __init__(self, v): self.v = v
-    def is_empty(self): return False
-    def is_something(self): return True
-    def value(self): return self.v
+class Just(Maybe):
+    __slots__ = ['value']
+    def __init__(self, v): self.value = v
